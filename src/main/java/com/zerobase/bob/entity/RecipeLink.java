@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class MenuLink {
+public class RecipeLink {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class MenuLink {
   private String link;
   private String name;
 
-  public MenuLink (String link, String name) {
+  public RecipeLink(String link, String name) {
     this.link = link;
     this.name = name;
   }
