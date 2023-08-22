@@ -1,22 +1,18 @@
 package com.zerobase.bob.entity;
 
-import java.time.LocalTime;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.util.List;
+
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Recipe {
 
   @Id
@@ -24,15 +20,18 @@ public class Recipe {
   private Long id;
 
   private String name;
+  private String image;
   private String description;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "recipe_id")
-  private List<Ingredient> ingredients;
+  @ElementCollection(fetch = FetchType.LAZY)
+  private List<String> ingredients;
 
-  @ElementCollection
+  @ElementCollection(fetch = FetchType.LAZY)
   private List<String> steps;
-  private String cookTime;
 
+  private String cookTime;
+  private String source;
+
+  private Long userId;
 
 }
