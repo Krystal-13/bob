@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers(
-                        "/auth/signUp"
+                        "/auth/signUp", "/search/**"
                 )
                 .permitAll();
         return http.build();
