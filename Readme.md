@@ -17,4 +17,4 @@
 * 리뷰 작성
 
 ### ERD
-![bob](https://github.com/Krystal-13/bob/assets/129822965/01ea8a7b-66b4-4269-bf00-5fce46750614)
+![bob (1)](https://github.com/Krystal-13/bob/assets/129822965/c7e1397c-1028-4abe-8662-aeb48d4b95e0)
