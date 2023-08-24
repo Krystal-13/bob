@@ -40,7 +40,7 @@ public class ScrapServiceImpl implements ScrapService {
                 .orElseThrow(RuntimeException::new);
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
-                            new CustomException(ErrorCode.USER_NOT_FOUND));
+                                 new CustomException(ErrorCode.USER_NOT_FOUND));
 
         Recipe recipe = scraper.scrapRecipe(recipeLink, user.getId());
         recipeRepository.save(recipe);

@@ -1,9 +1,6 @@
 package com.zerobase.bob.security;
 
-import com.zerobase.bob.exception.CustomException;
-import com.zerobase.bob.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -43,12 +40,8 @@ public class TokenProvider {
 
     private Claims parseClaims(String token) {
 
-        try {
-            return Jwts.parser().setSigningKey(this.secretKey)
-                    .parseClaimsJws(token).getBody();
-        } catch (ExpiredJwtException e) {
-            throw new CustomException(ErrorCode.EXPIRED_TOKEN);
-        }
+        return Jwts.parser().setSigningKey(this.secretKey)
+                .parseClaimsJws(token).getBody();
     }
 
     public Authentication getAuthentication(String token) {

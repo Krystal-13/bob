@@ -7,7 +7,7 @@ import com.zerobase.bob.exception.CustomException;
 import com.zerobase.bob.exception.ErrorCode;
 import com.zerobase.bob.repository.RecipeRepository;
 import com.zerobase.bob.repository.UserRepository;
-import com.zerobase.bob.service.BookmarkService;
+import com.zerobase.bob.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +16,18 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class BookmarkServiceImpl implements BookmarkService {
+public class RecipeServiceImpl implements RecipeService {
 
     private final UserRepository userRepository;
     private final RecipeRepository recipeRepository;
 
+    private static final String sourceUrl = "http://localhost:8080/recipe/";
+
     @Override
     public List<RecipeDto> getMyRecipeList(String email) {
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
+                                    new CustomException(ErrorCode.USER_NOT_FOUND));
 
         List<Recipe> recipeList = recipeRepository.findAllByUserId(user.getId());
 
@@ -34,7 +37,10 @@ public class BookmarkServiceImpl implements BookmarkService {
     @Override
     public RecipeDto createRecipe(RecipeDto request, String email) {
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
+                                    new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        long totalCount = recipeRepository.count() + 1;
 
         Recipe recipe = Recipe.builder()
                 .name(request.getName())
@@ -43,7 +49,7 @@ public class BookmarkServiceImpl implements BookmarkService {
                 .cookTime(request.getCookTime())
                 .ingredients(request.getIngredients())
                 .steps(request.getSteps())
-                .source(request.getSource())
+                .source(sourceUrl + totalCount)
                 .userId(user.getId())
                 .build();
         recipeRepository.save(recipe);

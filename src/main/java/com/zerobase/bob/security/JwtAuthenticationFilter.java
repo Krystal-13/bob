@@ -66,13 +66,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (!ObjectUtils.isEmpty(token) && token.startsWith(TOKEN_PREFIX)) {
             return token.substring(TOKEN_PREFIX.length());
         }
-        return null; //TODO : token is null.
+        return null;
     }
 
-    /**
-     * Filter 단계에서 내려주는 에러응답
-     */
-    private void sendErrorResponse(HttpServletResponse response, String message) throws IOException {
+    private void sendErrorResponse(HttpServletResponse response, String message)
+                                                            throws IOException {
 
         log.error("{} errorResponse : {}", getClass(), message);
 
@@ -82,9 +80,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(objectMapper
                                     .writeValueAsString(ErrorResponse.builder()
-                                                                    .errorCode(ErrorCode.INVALID_REQUEST)
-                                                                    .errorMessage(message)
-                                                                    .build()));
+                                            .errorCode(ErrorCode.INVALID_REQUEST)
+                                            .errorMessage(message)
+                                            .build()));
 
     }
 }

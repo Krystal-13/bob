@@ -4,7 +4,7 @@ import com.zerobase.bob.dto.RecipeDto;
 
 import java.util.List;
 
-public interface BookmarkService {
+public interface RecipeService {
     RecipeDto createRecipe(RecipeDto request, String email);
 
     RecipeDto editRecipe(RecipeDto request, String email);
