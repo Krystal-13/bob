@@ -22,24 +22,19 @@ import java.util.Objects;
 @Component
 @Slf4j
 public class Scraper {
-    private static final String listUrl = "https://www.10000recipe.com/recipe/list.html?q=";
+    private static final String listUrl = "https://www.10000recipe.com/recipe/list.html?q=%s&page=%d";
     private static final String baseUrl = "https://www.10000recipe.com";
 
-    public List<RecipeLink> scrapRecipeUrlAndName(String menuName) {
+    public List<RecipeLink> scrapRecipeUrlAndName(String menuName, int page) {
 
         List<RecipeLink> list = new ArrayList<>();
 
         try {
-            Connection connection = Jsoup.connect(listUrl + menuName);
+            String url = String.format(listUrl , menuName, page);
+            Connection connection = Jsoup.connect(url);
             Document document = connection.get();
 
             Elements parsingDivs = document.getElementsByClass("common_sp_list_li");
-
-        /*
-        검색한 리스트 총 40개 레시피 url
-        /recipe/*******  -> recipeUrl + attr = 메뉴 링크
-         */
-            int count = 0; // 한페이지당 40개
 
             for (Element e : parsingDivs) {
                 String attr = e.getElementsByAttribute("href").attr("href");
@@ -59,7 +54,7 @@ public class Scraper {
     public Recipe scrapRecipe(RecipeLink recipeLink, Long userId) {
 
         List<String> stepList = new ArrayList<>();
-        List<String> ingredients = new ArrayList<>();
+        List<String> ingredientList = new ArrayList<>();
 
         try {
             Connection connection = Jsoup.connect(recipeLink.getLink());
@@ -76,7 +71,7 @@ public class Scraper {
                 String text = e.child(0).text();
                 String unit = e.select(".ingre_unit").text(); // 계량
 
-                ingredients.add(text + " " + unit);
+                ingredientList.add(text + " " + unit);
             }
 
             Element steps = document.getElementsByClass("view_step").get(0);
@@ -90,7 +85,7 @@ public class Scraper {
                     .name(recipeLink.getName())
                     .image(image)
                     .description("")
-                    .ingredients(ingredients)
+                    .ingredients(ingredientList)
                     .steps(stepList)
                     .cookTime(time)
                     .source(recipeLink.getLink())

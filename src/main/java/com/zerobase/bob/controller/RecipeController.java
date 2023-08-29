@@ -17,30 +17,26 @@ public class RecipeController {
     private final RecipeService recipeService;
 
     @GetMapping("/list")
-    public ResponseEntity<?> getMyRecipeList(Principal principal) {
-        List<RecipeDto> recipeList = recipeService.getMyRecipeList(principal.getName());
+    public ResponseEntity<List<RecipeDto>> getMyRecipeList(Principal principal) {
 
-        return ResponseEntity.ok(recipeList);
+        return ResponseEntity.ok(recipeService.getMyRecipeList(principal.getName()));
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> createRecipe(Principal principal, @RequestBody RecipeDto request) {
-        RecipeDto recipeDto = recipeService.createRecipe(request, principal.getName());
+    public ResponseEntity<RecipeDto> createRecipe(Principal principal, @RequestBody RecipeDto request) {
 
-        return ResponseEntity.ok(recipeDto);
+        return ResponseEntity.ok(recipeService.createRecipe(request, principal.getName()));
     }
 
-    @PostMapping("/edit")
-    public ResponseEntity<?> editRecipe(Principal principal, @RequestBody RecipeDto request) {
-        RecipeDto recipeDto = recipeService.editRecipe(request, principal.getName());
+    @PatchMapping("/edit")
+    public ResponseEntity<RecipeDto> editRecipe(Principal principal, @RequestBody RecipeDto request) {
 
-        return ResponseEntity.ok(recipeDto);
+        return ResponseEntity.ok(recipeService.editRecipe(request, principal.getName()));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteRecipe(Principal principal, @RequestParam Long RecipeId) {
-        boolean result = recipeService.deleteRecipe(RecipeId, principal.getName());
+    public ResponseEntity<Boolean> deleteRecipe(Principal principal, @RequestParam Long RecipeId) {
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(recipeService.deleteRecipe(RecipeId, principal.getName()));
     }
 }

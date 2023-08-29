@@ -27,6 +27,7 @@ public class RecipeDto {
 
   public static RecipeDto of(Recipe recipe) {
     return RecipeDto.builder()
+        .id(recipe.getId())
         .name(recipe.getName())
         .image(recipe.getImage())
         .description(recipe.getDescription())

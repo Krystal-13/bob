@@ -29,7 +29,7 @@ public class RecipeServiceImpl implements RecipeService {
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                                     new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        List<Recipe> recipeList = recipeRepository.findAllByUserId(user.getId());
+        List<Recipe> recipeList = recipeRepository.findAllByUserIdAndSourceContainingIgnoreCase(user.getId(), sourceUrl);
 
         return RecipeDto.of(recipeList);
     }

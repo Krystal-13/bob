@@ -17,19 +17,23 @@ public class ScrapController {
 
     private final ScrapService scrapRecipe;
 
+    @GetMapping("/search")
+    public ResponseEntity<List<RecipeLink>> searchRecipe(
+                                                @RequestParam
+                                                        (value = "page", defaultValue = "1")
+                                                        int page,
+                                                @RequestParam String menuName) {
 
-    @GetMapping("/search/{menuName}")
-    public ResponseEntity<?> searchRecipe(@PathVariable String menuName) {
-        List<RecipeLink> recipeLinks = scrapRecipe.searchByMenuName(menuName);
-
-        return ResponseEntity.ok(recipeLinks);
+        return ResponseEntity.ok(scrapRecipe.searchByMenuName(menuName, page));
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/add")
-    public ResponseEntity<?> addRecipe(Principal principal, @RequestParam Long recipeId) {
-        RecipeDto recipeDto = scrapRecipe.scrapByRecipeId(recipeId, principal.getName());
+    public ResponseEntity<RecipeDto> addRecipe(Principal principal,
+                                               @RequestParam Long recipeId,
+                                               @RequestParam String groupName) {
 
-        return ResponseEntity.ok(recipeDto);
+        return ResponseEntity.ok(scrapRecipe.scrapByRecipeId(
+                                    recipeId, principal.getName(), groupName));
     }
 }

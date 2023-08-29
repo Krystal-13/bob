@@ -1,6 +1,6 @@
 package com.zerobase.bob.controller;
 
-import com.zerobase.bob.dto.Auth;
+import com.zerobase.bob.dto.AuthRequestDto;
 import com.zerobase.bob.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +17,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signUp")
-    public ResponseEntity<?> signUp (@RequestBody Auth.SignUp request) {
+    public ResponseEntity<Boolean> signUp (@RequestBody AuthRequestDto.SignUp request) {
 
         return ResponseEntity.ok(authService.signUp(request));
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<?> signIn (@RequestBody Auth.SignIn request) {
+    public ResponseEntity<String> signIn (@RequestBody AuthRequestDto.SignIn request) {
 
         return ResponseEntity.ok(authService.signIn(request));
     }

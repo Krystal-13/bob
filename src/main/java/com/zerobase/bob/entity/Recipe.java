@@ -1,6 +1,8 @@
 package com.zerobase.bob.entity;
 
 import com.zerobase.bob.dto.RecipeDto;
+import com.zerobase.bob.entity.converter.IngredientConverter;
+import com.zerobase.bob.entity.converter.StepConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,10 +26,10 @@ public class Recipe {
     private String image;
     private String description;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @Convert(converter = IngredientConverter.class)
     private List<String> ingredients;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @Convert(converter = StepConverter.class)
     private List<String> steps;
 
     private String cookTime;

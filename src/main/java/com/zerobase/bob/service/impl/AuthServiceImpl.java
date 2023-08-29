@@ -1,6 +1,6 @@
 package com.zerobase.bob.service.impl;
 
-import com.zerobase.bob.dto.Auth;
+import com.zerobase.bob.dto.AuthRequestDto;
 import com.zerobase.bob.entity.User;
 import com.zerobase.bob.exception.CustomException;
 import com.zerobase.bob.repository.UserRepository;
@@ -22,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
 
     @Override
-    public boolean signUp(Auth.SignUp request) {
+    public boolean signUp(AuthRequestDto.SignUp request) {
 
         boolean requestUser = userRepository.existsByEmail(request.getEmail());
 
@@ -44,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String signIn(Auth.SignIn request) {
+    public String signIn(AuthRequestDto.SignIn request) {
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));

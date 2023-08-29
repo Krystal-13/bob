@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
-    List<Recipe> findAllByUserId(Long userId);
+    List<Recipe> findAllByUserIdAndSourceContainingIgnoreCase(Long userId, String Source);
+
+    boolean existsByUserIdAndSource(Long userId, String source);
 
 }

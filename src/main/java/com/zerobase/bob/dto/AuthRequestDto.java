@@ -2,7 +2,7 @@ package com.zerobase.bob.dto;
 
 import lombok.Getter;
 
-public class Auth {
+public class AuthRequestDto {
 
     @Getter
     public static class SignUp {
