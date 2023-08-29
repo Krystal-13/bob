@@ -2,6 +2,7 @@ package com.zerobase.bob.scraper;
 
 import com.zerobase.bob.entity.Recipe;
 import com.zerobase.bob.entity.RecipeLink;
+import com.zerobase.bob.entity.type.RecipeType;
 import com.zerobase.bob.exception.CustomException;
 import com.zerobase.bob.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +23,15 @@ import java.util.Objects;
 @Component
 @Slf4j
 public class Scraper {
-    private static final String listUrl = "https://www.10000recipe.com/recipe/list.html?q=%s&page=%d";
-    private static final String baseUrl = "https://www.10000recipe.com";
+    private static final String LIST_URL = "https://www.10000recipe.com/recipe/list.html?q=%s&page=%d";
+    private static final String BASE_URL = "https://www.10000recipe.com";
 
     public List<RecipeLink> scrapRecipeUrlAndName(String menuName, int page) {
 
         List<RecipeLink> list = new ArrayList<>();
 
         try {
-            String url = String.format(listUrl , menuName, page);
+            String url = String.format(LIST_URL, menuName, page);
             Connection connection = Jsoup.connect(url);
             Document document = connection.get();
 
@@ -41,7 +42,7 @@ public class Scraper {
                 String recipeName =
                         e.getElementsByClass("common_sp_caption_tit line2").text();
 
-                list.add(new RecipeLink(baseUrl + attr, recipeName));
+                list.add(new RecipeLink(BASE_URL + attr, recipeName, RecipeType.RECIPE_10000));
             }
 
         } catch (IOException e) {
@@ -88,7 +89,7 @@ public class Scraper {
                     .ingredients(ingredientList)
                     .steps(stepList)
                     .cookTime(time)
-                    .source(recipeLink.getLink())
+                    .link(recipeLink.getLink())
                     .userId(userId)
                     .build();
 

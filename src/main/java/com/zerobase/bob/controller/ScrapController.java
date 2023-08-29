@@ -30,10 +30,10 @@ public class ScrapController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/add")
     public ResponseEntity<RecipeDto> addRecipe(Principal principal,
-                                               @RequestParam Long recipeId,
+                                               @RequestParam Long recipeLinkId,
                                                @RequestParam String groupName) {
 
         return ResponseEntity.ok(scrapRecipe.scrapByRecipeId(
-                                    recipeId, principal.getName(), groupName));
+                                    recipeLinkId, principal.getName(), groupName));
     }
 }

@@ -33,7 +33,7 @@ public class Recipe {
     private List<String> steps;
 
     private String cookTime;
-    private String source;
+    private String link;
 
     private Long userId;
 
@@ -45,7 +45,7 @@ public class Recipe {
         this.ingredients = request.getIngredients();
         this.steps = request.getSteps();
         this.cookTime = request.getCookTime();
-        this.source = request.getSource();
+        this.link = request.getLink();
         this.userId = request.getId();
 
     }

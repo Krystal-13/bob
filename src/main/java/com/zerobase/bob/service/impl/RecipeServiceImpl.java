@@ -2,9 +2,12 @@ package com.zerobase.bob.service.impl;
 
 import com.zerobase.bob.dto.RecipeDto;
 import com.zerobase.bob.entity.Recipe;
+import com.zerobase.bob.entity.RecipeLink;
 import com.zerobase.bob.entity.User;
+import com.zerobase.bob.entity.type.RecipeType;
 import com.zerobase.bob.exception.CustomException;
 import com.zerobase.bob.exception.ErrorCode;
+import com.zerobase.bob.repository.RecipeLinkRepository;
 import com.zerobase.bob.repository.RecipeRepository;
 import com.zerobase.bob.repository.UserRepository;
 import com.zerobase.bob.service.RecipeService;
@@ -20,16 +23,16 @@ public class RecipeServiceImpl implements RecipeService {
 
     private final UserRepository userRepository;
     private final RecipeRepository recipeRepository;
+    private final RecipeLinkRepository recipeLinkRepository;
 
-    private static final String sourceUrl = "http://localhost:8080/recipe/";
-
+    private static final String SOURCE_URL = "http://localhost:8080/recipe/";
     @Override
     public List<RecipeDto> getMyRecipeList(String email) {
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                                     new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        List<Recipe> recipeList = recipeRepository.findAllByUserIdAndSourceContainingIgnoreCase(user.getId(), sourceUrl);
+        List<Recipe> recipeList = recipeRepository.findAllByUserIdAndLinkContainingIgnoreCase(user.getId(), SOURCE_URL);
 
         return RecipeDto.of(recipeList);
     }
@@ -40,7 +43,8 @@ public class RecipeServiceImpl implements RecipeService {
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                                     new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        long totalCount = recipeRepository.count() + 1;
+        long count = recipeRepository.findFirstByOrderByIdDesc().getId() + 1;
+
 
         Recipe recipe = Recipe.builder()
                 .name(request.getName())
@@ -49,10 +53,13 @@ public class RecipeServiceImpl implements RecipeService {
                 .cookTime(request.getCookTime())
                 .ingredients(request.getIngredients())
                 .steps(request.getSteps())
-                .source(sourceUrl + totalCount)
+                .link(SOURCE_URL + count)
                 .userId(user.getId())
                 .build();
         recipeRepository.save(recipe);
+
+        RecipeLink recipeLink = new RecipeLink(recipe.getLink(), recipe.getName(), RecipeType.RECIPE_8080);
+        recipeLinkRepository.save(recipeLink);
 
         return RecipeDto.of(recipe);
     }

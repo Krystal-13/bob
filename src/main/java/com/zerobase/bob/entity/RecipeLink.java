@@ -1,9 +1,8 @@
 package com.zerobase.bob.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import com.zerobase.bob.entity.type.RecipeType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,12 +15,17 @@ public class RecipeLink {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(unique = true)
   private String link;
   private String name;
 
-  public RecipeLink(String link, String name) {
+  @Enumerated(EnumType.STRING)
+  private RecipeType source;
+
+  public RecipeLink(String link, String name, RecipeType source) {
     this.link = link;
     this.name = name;
+    this.source = source;
   }
 
 }

@@ -23,7 +23,7 @@ public class RecipeDto {
   private List<String> ingredients;
   private List<String> steps;
   private String cookTime;
-  private String source;
+  private String link;
 
   public static RecipeDto of(Recipe recipe) {
     return RecipeDto.builder()
@@ -34,7 +34,7 @@ public class RecipeDto {
         .ingredients(recipe.getIngredients())
         .steps(recipe.getSteps())
         .cookTime(recipe.getCookTime())
-        .source(recipe.getSource())
+        .link(recipe.getLink())
         .build();
   }
 

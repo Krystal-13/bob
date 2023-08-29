@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MenuLinkRepository extends JpaRepository<RecipeLink, Long> {
+public interface RecipeLinkRepository extends JpaRepository<RecipeLink, Long> {
 
 }
