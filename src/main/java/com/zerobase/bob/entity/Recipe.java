@@ -26,9 +26,11 @@ public class Recipe {
     private String image;
     private String description;
 
+    @Column(columnDefinition = "TEXT")
     @Convert(converter = IngredientConverter.class)
     private List<String> ingredients;
 
+    @Column(columnDefinition = "TEXT")
     @Convert(converter = StepConverter.class)
     private List<String> steps;
 
