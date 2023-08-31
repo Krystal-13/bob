@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RecipeLinkRepository extends JpaRepository<RecipeLink, Long> {
 
+    boolean existsByLink(String link);
+
 }

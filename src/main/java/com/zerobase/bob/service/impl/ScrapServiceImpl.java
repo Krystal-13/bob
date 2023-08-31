@@ -33,7 +33,13 @@ public class ScrapServiceImpl implements ScrapService {
     public List<RecipeLink> searchByMenuName(String menuName, int page) {
 
         List<RecipeLink> recipeLinks = scraper.scrapRecipeUrlAndName(menuName, page);
-        recipeLinkRepository.saveAll(recipeLinks);
+
+        for (RecipeLink e : recipeLinks) {
+            boolean exist = recipeLinkRepository.existsByLink(e.getLink());
+            if (!exist) {
+                recipeLinkRepository.save(e);
+            }
+        }
 
         return recipeLinks;
     }

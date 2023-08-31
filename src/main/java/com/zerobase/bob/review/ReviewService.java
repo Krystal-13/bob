@@ -4,6 +4,7 @@ import com.zerobase.bob.entity.Recipe;
 import com.zerobase.bob.entity.User;
 import com.zerobase.bob.exception.CustomException;
 import com.zerobase.bob.exception.ErrorCode;
+import com.zerobase.bob.filesave.FileSave;
 import com.zerobase.bob.repository.RecipeRepository;
 import com.zerobase.bob.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

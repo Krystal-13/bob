@@ -1,10 +1,10 @@
 package com.zerobase.bob.entity;
 
-import javax.persistence.*;
-
 import com.zerobase.bob.entity.type.RecipeType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
 @Getter
