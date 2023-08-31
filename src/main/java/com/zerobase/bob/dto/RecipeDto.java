@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -35,4 +37,16 @@ public class RecipeDto {
         .build();
   }
 
+  public static List<RecipeDto> of(List<Recipe> recipeList) {
+    if (recipeList == null) {
+      return Collections.emptyList();
+    }
+
+    List<RecipeDto> recipeDtolist = new ArrayList<>();
+    for (Recipe x : recipeList) {
+      recipeDtolist.add(RecipeDto.of(x));
+    }
+
+    return recipeDtolist;
+  }
 }

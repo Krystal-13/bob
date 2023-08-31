@@ -2,8 +2,8 @@ package com.zerobase.bob.scraper;
 
 import com.zerobase.bob.entity.Recipe;
 import com.zerobase.bob.entity.RecipeLink;
-import com.zerobase.bob.repository.MenuLinkRepository;
-import com.zerobase.bob.repository.RecipeRepository;
+import com.zerobase.bob.exception.CustomException;
+import com.zerobase.bob.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
@@ -27,7 +27,7 @@ public class Scraper {
 
     public List<RecipeLink> scrapRecipeUrlAndName(String menuName) {
 
-        List<RecipeLink> list = new ArrayList<RecipeLink>();
+        List<RecipeLink> list = new ArrayList<>();
 
         try {
             Connection connection = Jsoup.connect(listUrl + menuName);
@@ -43,7 +43,8 @@ public class Scraper {
 
             for (Element e : parsingDivs) {
                 String attr = e.getElementsByAttribute("href").attr("href");
-                String recipeName = e.getElementsByClass("common_sp_caption_tit line2").text();
+                String recipeName =
+                        e.getElementsByClass("common_sp_caption_tit line2").text();
 
                 list.add(new RecipeLink(baseUrl + attr, recipeName));
             }
@@ -55,7 +56,7 @@ public class Scraper {
         return list;
     }
 
-    public Recipe scrapRecipe(RecipeLink recipeLink) {
+    public Recipe scrapRecipe(RecipeLink recipeLink, Long userId) {
 
         List<String> stepList = new ArrayList<>();
         List<String> ingredients = new ArrayList<>();
@@ -64,7 +65,8 @@ public class Scraper {
             Connection connection = Jsoup.connect(recipeLink.getLink());
             Document document = connection.get();
 
-            String image = Objects.requireNonNull(document.getElementById("main_thumbs")).attr("src");
+            String image = Objects.requireNonNull(document.getElementById("main_thumbs"))
+                                                                .attr("src");
 
             String time = document.getElementsByClass("view2_summary_info2").text();
 
@@ -92,12 +94,12 @@ public class Scraper {
                     .steps(stepList)
                     .cookTime(time)
                     .source(recipeLink.getLink())
+                    .userId(userId)
                     .build();
 
         } catch (IOException e) {
             log.debug("scrap failed : " + recipeLink.getLink());
-            return null;
-            // TODO
+            throw new CustomException(ErrorCode.INVALID_REQUEST);
         }
     }
 }
