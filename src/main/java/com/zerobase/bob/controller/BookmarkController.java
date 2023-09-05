@@ -15,11 +15,26 @@ import java.util.List;
 public class BookmarkController {
 
     private final BookmarkService bookmarkService;
+
+    @PostMapping("/add")
+    public ResponseEntity<BookmarkDto> addBookmark(Principal principal,
+                                               @RequestParam Long recipeId,
+                                               @RequestParam String groupName) {
+
+        return ResponseEntity.ok(bookmarkService.addBookmark(principal.getName(), recipeId, groupName));
+    }
     @GetMapping("/list")
-    public ResponseEntity<List<BookmarkDto>> searchRecipe(Principal principal,
+    public ResponseEntity<List<BookmarkDto>> bookmarkList(Principal principal,
                                                           @RequestParam String groupName) {
 
-        return ResponseEntity.ok(bookmarkService.getBookmarkList(principal.getName(), groupName));
+        return ResponseEntity.ok(bookmarkService.getBookmarkListByGroupName(principal.getName(), groupName));
+    }
+
+    @PatchMapping("/edit")
+    public ResponseEntity<BookmarkDto> editBookmark(Principal principal,
+                                                    @RequestBody BookmarkDto bookmarkDto) {
+
+        return ResponseEntity.ok(bookmarkService.editBookmark(principal.getName(), bookmarkDto));
     }
 
     @DeleteMapping("/delete")

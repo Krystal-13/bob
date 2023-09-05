@@ -4,9 +4,9 @@ import com.zerobase.bob.entity.Recipe;
 import com.zerobase.bob.entity.User;
 import com.zerobase.bob.exception.CustomException;
 import com.zerobase.bob.exception.ErrorCode;
-import com.zerobase.bob.filesave.FileSave;
 import com.zerobase.bob.repository.RecipeRepository;
 import com.zerobase.bob.repository.UserRepository;
+import com.zerobase.bob.service.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,13 +20,14 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final RecipeRepository recipeRepository;
+    private final AwsS3Service awsS3Service;
 
     public ReviewDto writeReview(String email, ReviewDto reviewDto, MultipartFile file) {
 
         String urlFilename = "";
 
         if (file != null) {
-            urlFilename = FileSave.getNewSaveFile(file);
+            urlFilename = awsS3Service.uploadAndGetUrl(file);
         }
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
@@ -43,6 +44,9 @@ public class ReviewService {
                 .image(urlFilename)
                 .build();
         reviewRepository.save(review);
+
+        recipe.setReviews(review);
+        recipeRepository.save(recipe);
 
         return ReviewDto.of(review);
     }

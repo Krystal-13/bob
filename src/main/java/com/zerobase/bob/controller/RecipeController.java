@@ -5,6 +5,7 @@ import com.zerobase.bob.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -23,15 +24,19 @@ public class RecipeController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<RecipeDto> createRecipe(Principal principal, @RequestBody RecipeDto request) {
+    public ResponseEntity<RecipeDto> createRecipe(Principal principal,
+                                                  @RequestPart(value = "dto") RecipeDto request,
+                                                  @RequestPart(value = "file") MultipartFile file) {
 
-        return ResponseEntity.ok(recipeService.createRecipe(request, principal.getName()));
+        return ResponseEntity.ok(recipeService.createRecipe(request, principal.getName(), file));
     }
 
     @PatchMapping("/edit")
-    public ResponseEntity<RecipeDto> editRecipe(Principal principal, @RequestBody RecipeDto request) {
+    public ResponseEntity<RecipeDto> editRecipe(Principal principal,
+                                                @RequestPart(value = "dto") RecipeDto request,
+                                                @RequestPart(value = "file") MultipartFile file) {
 
-        return ResponseEntity.ok(recipeService.editRecipe(request, principal.getName()));
+        return ResponseEntity.ok(recipeService.editRecipe(request, principal.getName(), file));
     }
 
     @DeleteMapping("/delete")

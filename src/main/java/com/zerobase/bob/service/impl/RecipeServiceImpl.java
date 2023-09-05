@@ -10,9 +10,11 @@ import com.zerobase.bob.exception.ErrorCode;
 import com.zerobase.bob.repository.RecipeLinkRepository;
 import com.zerobase.bob.repository.RecipeRepository;
 import com.zerobase.bob.repository.UserRepository;
+import com.zerobase.bob.service.AwsS3Service;
 import com.zerobase.bob.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +26,7 @@ public class RecipeServiceImpl implements RecipeService {
     private final UserRepository userRepository;
     private final RecipeRepository recipeRepository;
     private final RecipeLinkRepository recipeLinkRepository;
+    private final AwsS3Service awsS3Service;
 
     private static final String SOURCE_URL = "http://localhost:8080/recipe/";
     @Override
@@ -38,7 +41,13 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public RecipeDto createRecipe(RecipeDto request, String email) {
+    public RecipeDto createRecipe(RecipeDto request, String email, MultipartFile file) {
+
+        String urlFilename = "";
+
+        if (file != null) {
+            urlFilename = awsS3Service.uploadAndGetUrl(file);
+        }
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                                     new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -48,7 +57,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         Recipe recipe = Recipe.builder()
                 .name(request.getName())
-                .image(request.getImage())
+                .image(urlFilename)
                 .description(request.getDescription())
                 .cookTime(request.getCookTime())
                 .ingredients(request.getIngredients())
@@ -65,7 +74,14 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public RecipeDto editRecipe(RecipeDto request, String email) {
+    public RecipeDto editRecipe(RecipeDto request, String email, MultipartFile file) {
+
+        String urlFilename = "";
+
+        if (file != null && file.getSize() > 0) {
+            urlFilename = awsS3Service.uploadAndGetUrl(file);
+        }
+        request.setImage(urlFilename);
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                                 new CustomException(ErrorCode.USER_NOT_FOUND));

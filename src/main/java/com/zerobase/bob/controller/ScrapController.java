@@ -5,13 +5,11 @@ import com.zerobase.bob.entity.RecipeLink;
 import com.zerobase.bob.service.ScrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -30,13 +28,9 @@ public class ScrapController {
         return ResponseEntity.ok(scrapRecipe.searchByMenuName(menuName, page));
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/add")
-    public ResponseEntity<RecipeDto> addRecipe(Principal principal,
-                                               @RequestParam Long recipeLinkId,
-                                               @RequestParam String groupName) {
+    @GetMapping("/detail/{recipeLinkId}")
+    public ResponseEntity<RecipeDto> recipeDetail(@PathVariable Long recipeLinkId) {
 
-        return ResponseEntity.ok(scrapRecipe.scrapByRecipeId(
-                                    recipeLinkId, principal.getName(), groupName));
+        return ResponseEntity.ok(scrapRecipe.recipeDetail(recipeLinkId));
     }
 }

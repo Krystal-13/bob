@@ -16,7 +16,7 @@ import java.security.Principal;
 public class ReviewController {
 
     private final ReviewService reviewService;
-    @PostMapping(value = "/")
+    @PostMapping()
     public ResponseEntity<ReviewDto> writeReview (Principal principal,
                                                   @RequestPart(value = "dto") ReviewDto reviewDto,
                                                   @RequestPart(value = "file") MultipartFile file) {

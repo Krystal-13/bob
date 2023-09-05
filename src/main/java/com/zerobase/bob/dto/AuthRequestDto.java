@@ -6,14 +6,14 @@ public class AuthRequestDto {
 
     @Getter
     public static class SignUp {
-        String name;
-        String email;
-        String password;
+        private String name;
+        private String email;
+        private String password;
     }
     @Getter
     public static class SignIn {
-        String email;
-        String password;
+        private String email;
+        private String password;
     }
 
 

@@ -52,7 +52,7 @@ public class Scraper {
         return list;
     }
 
-    public Recipe scrapRecipe(RecipeLink recipeLink, Long userId) {
+    public Recipe scrapRecipe(RecipeLink recipeLink) {
 
         List<String> stepList = new ArrayList<>();
         List<String> ingredientList = new ArrayList<>();
@@ -90,7 +90,6 @@ public class Scraper {
                     .steps(stepList)
                     .cookTime(time)
                     .link(recipeLink.getLink())
-                    .userId(userId)
                     .build();
 
         } catch (IOException e) {

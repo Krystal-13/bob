@@ -3,19 +3,16 @@ package com.zerobase.bob.entity;
 import com.zerobase.bob.dto.RecipeDto;
 import com.zerobase.bob.entity.converter.IngredientConverter;
 import com.zerobase.bob.entity.converter.StepConverter;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.zerobase.bob.review.Review;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Recipe {
 
     @Id
@@ -39,6 +36,26 @@ public class Recipe {
 
     private Long userId;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "recipe_id")
+    private List<Review> reviews = new ArrayList<>();
+
+    @Builder
+    public Recipe(String name, String image, String description, List<String> ingredients, List<String> steps, String cookTime, String link, Long userId, List<Review> reviews) {
+        this.name = name;
+        this.image = image;
+        this.description = description;
+        this.ingredients = ingredients;
+        this.steps = steps;
+        this.cookTime = cookTime;
+        this.link = link;
+        this.userId = userId;
+    }
+
+    public void setReviews(Review review) {
+        this.reviews.add(review);
+    }
+
     public void updateRecipe(RecipeDto request) {
 
         this.name = request.getName();
@@ -47,8 +64,6 @@ public class Recipe {
         this.ingredients = request.getIngredients();
         this.steps = request.getSteps();
         this.cookTime = request.getCookTime();
-        this.link = request.getLink();
-        this.userId = request.getId();
 
     }
 }

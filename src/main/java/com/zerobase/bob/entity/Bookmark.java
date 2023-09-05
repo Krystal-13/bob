@@ -1,20 +1,12 @@
 package com.zerobase.bob.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bookmark {
 
     @Id
@@ -22,6 +14,19 @@ public class Bookmark {
     private Long id;
 
     private Long userId;
-    private Long recipeId;
+
+    @OneToOne
+    private Recipe recipe;
     private String groupName;
+
+    @Builder
+    public Bookmark(Long userId, Recipe recipe, String groupName) {
+        this.userId = userId;
+        this.recipe = recipe;
+        this.groupName = groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
 }

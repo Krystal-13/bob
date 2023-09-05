@@ -1,16 +1,11 @@
 package com.zerobase.bob.review;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class ReviewDto {
 
     private Long recipeId;
@@ -19,6 +14,16 @@ public class ReviewDto {
     private String image;
     private int score;
     private LocalDateTime registeredAt;
+
+    @Builder
+    public ReviewDto(Long recipeId, String userName, String text, String image, int score, LocalDateTime registeredAt) {
+        this.recipeId = recipeId;
+        this.userName = userName;
+        this.text = text;
+        this.image = image;
+        this.score = score;
+        this.registeredAt = registeredAt;
+    }
 
     public static ReviewDto of(Review review) {
         return ReviewDto.builder()

@@ -6,7 +6,11 @@ import java.util.List;
 
 public interface BookmarkService {
 
-    List<BookmarkDto>  getBookmarkList(String email, String groupName);
+    List<BookmarkDto> getBookmarkListByGroupName(String email, String groupName);
 
     Boolean deleteBookmark(String email, Long recipeId);
+
+    BookmarkDto editBookmark(String email, BookmarkDto bookmarkDto);
+
+    BookmarkDto addBookmark(String email, Long recipeId, String groupName);
 }
