@@ -1,5 +1,6 @@
-package com.zerobase.bob.review;
+package com.zerobase.bob.dto;
 
+import com.zerobase.bob.entity.Review;
 import lombok.Builder;
 import lombok.Getter;
 

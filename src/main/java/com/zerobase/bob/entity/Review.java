@@ -1,7 +1,9 @@
-package com.zerobase.bob.review;
+package com.zerobase.bob.entity;
 
-import com.zerobase.bob.entity.User;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -39,5 +41,6 @@ public class Review {
         this.text = text;
         this.image = image;
         this.score = score;
+        this.registeredAt = getRegisteredAt();
     }
 }

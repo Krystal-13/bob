@@ -1,7 +1,7 @@
 package com.zerobase.bob.dto;
 
 import com.zerobase.bob.entity.Recipe;
-import com.zerobase.bob.review.Review;
+import com.zerobase.bob.entity.Review;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -20,14 +20,14 @@ public class RecipeDto {
   private List<String> steps;
   private String cookTime;
   private String link;
-  private List<Review> reviews;
+  private List<ReviewDto> reviews;
 
   public void setImage(String image) {
     this.image = image;
   }
 
   @Builder
-  public RecipeDto(Long id, String name, String image, String description, List<String> ingredients, List<String> steps, String cookTime, String link, List<Review> reviews) {
+  public RecipeDto(Long id, String name, String image, String description, List<String> ingredients, List<String> steps, String cookTime, String link, List<ReviewDto> reviews) {
     this.id = id;
     this.name = name;
     this.image = image;
@@ -49,7 +49,7 @@ public class RecipeDto {
         .steps(recipe.getSteps())
         .cookTime(recipe.getCookTime())
         .link(recipe.getLink())
-        .reviews(recipe.getReviews())
+        .reviews(getReviewText(recipe.getReviews()))
         .build();
   }
 
@@ -64,5 +64,25 @@ public class RecipeDto {
     }
 
     return recipeDtolist;
+  }
+
+  private static List<ReviewDto> getReviewText(List<Review> reviews) {
+
+    if (reviews == null) {
+      return Collections.emptyList();
+    }
+
+    List<ReviewDto> reviewList = new ArrayList<>();
+    for(Review x : reviews) {
+      ReviewDto review = ReviewDto.builder()
+              .userName(x.getUser().getName())
+              .text(x.getText())
+              .image((x.getImage()))
+              .score(x.getScore())
+              .registeredAt(x.getRegisteredAt())
+              .build();
+      reviewList.add(review);
+    }
+    return reviewList;
   }
 }

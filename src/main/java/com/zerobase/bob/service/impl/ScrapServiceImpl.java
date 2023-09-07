@@ -24,9 +24,9 @@ public class ScrapServiceImpl implements ScrapService {
     private final RecipeRepository recipeRepository;
 
     @Override
-    public List<RecipeLink> searchByMenuName(String menuName, int page) {
+    public List<RecipeLink> searchByMenuName(String menuName) {
 
-        List<RecipeLink> recipeLinks = scraper.scrapRecipeUrlAndName(menuName, page);
+        List<RecipeLink> recipeLinks = scraper.scrapRecipeUrlAndName(menuName);
 
         for (RecipeLink e : recipeLinks) {
             boolean exist = recipeLinkRepository.existsByLink(e.getLink());

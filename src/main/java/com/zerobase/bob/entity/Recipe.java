@@ -3,8 +3,10 @@ package com.zerobase.bob.entity;
 import com.zerobase.bob.dto.RecipeDto;
 import com.zerobase.bob.entity.converter.IngredientConverter;
 import com.zerobase.bob.entity.converter.StepConverter;
-import com.zerobase.bob.review.Review;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;

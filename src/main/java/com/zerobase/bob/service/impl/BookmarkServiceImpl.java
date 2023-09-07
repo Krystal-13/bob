@@ -62,6 +62,26 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
+    public BookmarkDto bookmarkMemo(String email, Long bookmarkId, String memo) {
+
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
+                new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        Bookmark bookmark = bookmarkRepository
+                .findById(bookmarkId).orElseThrow(() ->
+                        new CustomException(ErrorCode.RECIPE_NOT_FOUNT));
+
+        if (!user.getId().equals(bookmark.getUserId())) {
+            throw new CustomException(ErrorCode.UNMATCHED_USER_RECIPE);
+        }
+
+        bookmark.setMemo(memo);
+        bookmarkRepository.save(bookmark);
+
+        return BookmarkDto.of(bookmark);
+    }
+
+    @Override
     public BookmarkDto editBookmark(String email, BookmarkDto bookmarkDto) {
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->

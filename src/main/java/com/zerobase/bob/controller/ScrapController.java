@@ -19,13 +19,9 @@ public class ScrapController {
     private final ScrapService scrapRecipe;
 
     @GetMapping("/search")
-    public ResponseEntity<List<RecipeLink>> searchRecipe(
-                                                @RequestParam
-                                                        (value = "page", defaultValue = "1")
-                                                        int page,
-                                                @RequestParam String menuName) {
+    public ResponseEntity<List<RecipeLink>> searchRecipe(@RequestParam String menuName) {
 
-        return ResponseEntity.ok(scrapRecipe.searchByMenuName(menuName, page));
+        return ResponseEntity.ok(scrapRecipe.searchByMenuName(menuName));
     }
 
     @GetMapping("/detail/{recipeLinkId}")

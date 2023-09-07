@@ -18,15 +18,21 @@ public class Bookmark {
     @OneToOne
     private Recipe recipe;
     private String groupName;
+    private String memo;
 
     @Builder
-    public Bookmark(Long userId, Recipe recipe, String groupName) {
+    public Bookmark(Long userId, Recipe recipe, String groupName, String memo) {
         this.userId = userId;
         this.recipe = recipe;
         this.groupName = groupName;
+        this.memo = memo;
     }
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
 }

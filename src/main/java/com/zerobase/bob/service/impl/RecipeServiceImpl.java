@@ -43,11 +43,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public RecipeDto createRecipe(RecipeDto request, String email, MultipartFile file) {
 
-        String urlFilename = "";
-
-        if (file != null) {
-            urlFilename = awsS3Service.uploadAndGetUrl(file);
-        }
+        String urlFilename = awsS3Service.uploadAndGetUrl(file);
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                                     new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -76,11 +72,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public RecipeDto editRecipe(RecipeDto request, String email, MultipartFile file) {
 
-        String urlFilename = "";
-
-        if (file != null && file.getSize() > 0) {
-            urlFilename = awsS3Service.uploadAndGetUrl(file);
-        }
+        String urlFilename = awsS3Service.uploadAndGetUrl(file);
         request.setImage(urlFilename);
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->

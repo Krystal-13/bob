@@ -1,12 +1,14 @@
-package com.zerobase.bob.review;
+package com.zerobase.bob.service;
 
+import com.zerobase.bob.dto.ReviewDto;
 import com.zerobase.bob.entity.Recipe;
+import com.zerobase.bob.entity.Review;
 import com.zerobase.bob.entity.User;
 import com.zerobase.bob.exception.CustomException;
 import com.zerobase.bob.exception.ErrorCode;
 import com.zerobase.bob.repository.RecipeRepository;
+import com.zerobase.bob.repository.ReviewRepository;
 import com.zerobase.bob.repository.UserRepository;
-import com.zerobase.bob.service.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,11 +26,7 @@ public class ReviewService {
 
     public ReviewDto writeReview(String email, ReviewDto reviewDto, MultipartFile file) {
 
-        String urlFilename = "";
-
-        if (file != null) {
-            urlFilename = awsS3Service.uploadAndGetUrl(file);
-        }
+        String urlFilename = awsS3Service.uploadAndGetUrl(file);
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                 new CustomException(ErrorCode.USER_NOT_FOUND));

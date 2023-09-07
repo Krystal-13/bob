@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,10 +32,17 @@ public class BookmarkController {
     }
 
     @PatchMapping("/edit")
-    public ResponseEntity<BookmarkDto> editBookmark(Principal principal,
-                                                    @RequestBody BookmarkDto bookmarkDto) {
+    public ResponseEntity<BookmarkDto> editBookmarkName(Principal principal,
+                                                        @RequestBody BookmarkDto bookmarkDto) {
 
         return ResponseEntity.ok(bookmarkService.editBookmark(principal.getName(), bookmarkDto));
+    }
+
+    @PutMapping("/memo")
+    public ResponseEntity<BookmarkDto> bookmarkMemo(Principal principal,
+                                                    @RequestParam Long bookmarkId, @RequestBody Map<String, String> memo) {
+
+        return ResponseEntity.ok(bookmarkService.bookmarkMemo(principal.getName(), bookmarkId, memo.get("memo")));
     }
 
     @DeleteMapping("/delete")

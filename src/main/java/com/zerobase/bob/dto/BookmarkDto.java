@@ -16,13 +16,15 @@ public class BookmarkDto {
     private Long userId;
     private RecipeDto recipe;
     private String groupName;
+    private String memo;
 
 
     @Builder
-    private BookmarkDto(Long userId, RecipeDto recipe, String groupName) {
+    private BookmarkDto(Long userId, RecipeDto recipe, String groupName, String memo) {
         this.userId = userId;
         this.recipe = recipe;
         this.groupName = groupName;
+        this.memo = memo;
     }
 
     public static BookmarkDto of(Bookmark bookmark) {
@@ -30,6 +32,7 @@ public class BookmarkDto {
                 .userId(bookmark.getUserId())
                 .recipe(RecipeDto.of(bookmark.getRecipe()))
                 .groupName(bookmark.getGroupName())
+                .memo(bookmark.getMemo())
                 .build();
     }
 

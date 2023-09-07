@@ -26,27 +26,38 @@ public class Scraper {
     private static final String LIST_URL = "https://www.10000recipe.com/recipe/list.html?q=%s&page=%d";
     private static final String BASE_URL = "https://www.10000recipe.com";
 
-    public List<RecipeLink> scrapRecipeUrlAndName(String menuName, int page) {
+    public List<RecipeLink> scrapRecipeUrlAndName(String menuName) {
 
         List<RecipeLink> list = new ArrayList<>();
+        int page = 1;
 
         try {
             String url = String.format(LIST_URL, menuName, page);
             Connection connection = Jsoup.connect(url);
             Document document = connection.get();
+            String text = Objects.requireNonNull(document.getElementsByTag("b").first()).text();
+            int maxPage = Integer.parseInt(text.replaceAll(",","")) / 40 + 1;
 
-            Elements parsingDivs = document.getElementsByClass("common_sp_list_li");
+            while (maxPage >= page) {
 
-            for (Element e : parsingDivs) {
-                String attr = e.getElementsByAttribute("href").attr("href");
-                String recipeName =
-                        e.getElementsByClass("common_sp_caption_tit line2").text();
+                url = String.format(LIST_URL, menuName, page);
+                connection = Jsoup.connect(url);
+                document = connection.get();
 
-                list.add(new RecipeLink(BASE_URL + attr, recipeName, RecipeType.RECIPE_10000));
+                Elements parsingDivs = document.getElementsByClass("common_sp_list_li");
+
+                for (Element e : parsingDivs) {
+                    String attr = e.getElementsByAttribute("href").attr("href");
+                    String recipeName =
+                            e.getElementsByClass("common_sp_caption_tit line2").text();
+
+                    list.add(new RecipeLink(BASE_URL + attr, recipeName, RecipeType.RECIPE_10000));
+                }
+                page++;
             }
 
         } catch (IOException e) {
-            log.debug("scrap failed : " + menuName);
+            log.debug("scrap failed : " + menuName + " - " + page + " page");
         }
 
         return list;

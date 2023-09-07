@@ -13,4 +13,6 @@ public interface BookmarkService {
     BookmarkDto editBookmark(String email, BookmarkDto bookmarkDto);
 
     BookmarkDto addBookmark(String email, Long recipeId, String groupName);
+
+    BookmarkDto bookmarkMemo(String email, Long bookmarkId, String memo);
 }

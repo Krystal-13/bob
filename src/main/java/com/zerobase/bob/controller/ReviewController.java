@@ -1,5 +1,7 @@
-package com.zerobase.bob.review;
+package com.zerobase.bob.controller;
 
+import com.zerobase.bob.dto.ReviewDto;
+import com.zerobase.bob.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
