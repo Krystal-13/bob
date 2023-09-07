@@ -8,7 +8,7 @@ public interface BookmarkService {
 
     List<BookmarkDto> getBookmarkListByGroupName(String email, String groupName);
 
-    Boolean deleteBookmark(String email, Long recipeId);
+    Boolean deleteBookmark(String email, Long bookmarkId);
 
     BookmarkDto editBookmark(String email, BookmarkDto bookmarkDto);
 

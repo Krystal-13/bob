@@ -100,7 +100,7 @@ public class Scraper {
                     .ingredients(ingredientList)
                     .steps(stepList)
                     .cookTime(time)
-                    .link(recipeLink.getLink())
+                    .recipeLinkId(recipeLink.getId())
                     .build();
 
         } catch (IOException e) {

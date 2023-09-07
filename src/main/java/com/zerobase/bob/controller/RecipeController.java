@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 
@@ -25,18 +26,20 @@ public class RecipeController {
 
     @PostMapping("/new")
     public ResponseEntity<RecipeDto> createRecipe(Principal principal,
-                                                  @RequestPart(value = "dto") RecipeDto request,
+                                                  HttpServletRequest request,
+                                                  @RequestPart(value = "dto") RecipeDto recipeDto,
                                                   @RequestPart(value = "file") MultipartFile file) {
 
-        return ResponseEntity.ok(recipeService.createRecipe(request, principal.getName(), file));
+        return ResponseEntity.ok(recipeService.createRecipe(recipeDto, principal.getName(), file, request.getServletPath()));
     }
 
     @PatchMapping("/edit")
     public ResponseEntity<RecipeDto> editRecipe(Principal principal,
-                                                @RequestPart(value = "dto") RecipeDto request,
+                                                HttpServletRequest request,
+                                                @RequestPart(value = "dto") RecipeDto recipeDto,
                                                 @RequestPart(value = "file") MultipartFile file) {
 
-        return ResponseEntity.ok(recipeService.editRecipe(request, principal.getName(), file));
+        return ResponseEntity.ok(recipeService.editRecipe(recipeDto, principal.getName(), file, request.getServletPath()));
     }
 
     @DeleteMapping("/delete")

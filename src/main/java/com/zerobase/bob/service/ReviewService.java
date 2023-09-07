@@ -24,9 +24,9 @@ public class ReviewService {
     private final RecipeRepository recipeRepository;
     private final AwsS3Service awsS3Service;
 
-    public ReviewDto writeReview(String email, ReviewDto reviewDto, MultipartFile file) {
+    public ReviewDto writeReview(String email, ReviewDto reviewDto, MultipartFile file, String path) {
 
-        String urlFilename = awsS3Service.uploadAndGetUrl(file);
+        String urlFilename = awsS3Service.uploadAndGetUrl(file, path);
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                 new CustomException(ErrorCode.USER_NOT_FOUND));

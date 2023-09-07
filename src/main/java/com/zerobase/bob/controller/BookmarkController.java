@@ -47,9 +47,9 @@ public class BookmarkController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<Boolean> deleteBookmark(Principal principal,
-                                                          @RequestParam Long recipeId) {
+                                                          @RequestParam Long bookmarkId) {
 
-        return ResponseEntity.ok(bookmarkService.deleteBookmark(principal.getName(), recipeId));
+        return ResponseEntity.ok(bookmarkService.deleteBookmark(principal.getName(), bookmarkId));
     }
 
 }

@@ -9,10 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
+    Optional<Recipe> findByRecipeLinkId(Long recipeLinkId);
 
-    List<Recipe> findAllByUserIdAndLinkContainingIgnoreCase(Long userId, String link);
-    Optional<Recipe> findByLink(String link);
-    Recipe findFirstByOrderByIdDesc();
-
-
+    List<Recipe> findAllByUserId(Long userId);
 }

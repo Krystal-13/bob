@@ -18,6 +18,7 @@ public class Bookmark {
     @OneToOne
     private Recipe recipe;
     private String groupName;
+    @Lob
     private String memo;
 
     @Builder

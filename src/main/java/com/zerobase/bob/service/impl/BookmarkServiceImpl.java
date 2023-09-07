@@ -102,14 +102,18 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public Boolean deleteBookmark(String email, Long recipeId) {
+    public Boolean deleteBookmark(String email, Long bookmarkId) {
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                                 new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        Bookmark bookmark = bookmarkRepository.findByUserIdAndRecipeId(
-                                                user.getId(), recipeId).orElseThrow(() ->
+        Bookmark bookmark = bookmarkRepository.findById(bookmarkId).orElseThrow(() ->
                                                     new CustomException(ErrorCode.RECIPE_NOT_FOUNT));
+
+        if (!user.getId().equals(bookmark.getUserId())) {
+            throw new CustomException(ErrorCode.UNMATCHED_USER_RECIPE);
+        }
+
         bookmarkRepository.delete(bookmark);
 
         return true;

@@ -34,7 +34,7 @@ public class Recipe {
     private List<String> steps;
 
     private String cookTime;
-    private String link;
+    private Long recipeLinkId;
 
     private Long userId;
 
@@ -43,14 +43,14 @@ public class Recipe {
     private List<Review> reviews = new ArrayList<>();
 
     @Builder
-    public Recipe(String name, String image, String description, List<String> ingredients, List<String> steps, String cookTime, String link, Long userId, List<Review> reviews) {
+    public Recipe(String name, String image, String description, List<String> ingredients, List<String> steps, String cookTime, Long recipeLinkId, Long userId, List<Review> reviews) {
         this.name = name;
         this.image = image;
         this.description = description;
         this.ingredients = ingredients;
         this.steps = steps;
         this.cookTime = cookTime;
-        this.link = link;
+        this.recipeLinkId = recipeLinkId;
         this.userId = userId;
     }
 

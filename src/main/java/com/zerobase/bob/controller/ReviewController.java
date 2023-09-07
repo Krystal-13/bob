@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @RestController
@@ -20,9 +21,10 @@ public class ReviewController {
     private final ReviewService reviewService;
     @PostMapping()
     public ResponseEntity<ReviewDto> writeReview (Principal principal,
+                                                  HttpServletRequest request,
                                                   @RequestPart(value = "dto") ReviewDto reviewDto,
                                                   @RequestPart(value = "file") MultipartFile file) {
 
-        return ResponseEntity.ok(reviewService.writeReview(principal.getName(), reviewDto, file));
+        return ResponseEntity.ok(reviewService.writeReview(principal.getName(), reviewDto, file, request.getServletPath()));
     }
 }

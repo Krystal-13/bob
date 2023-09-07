@@ -44,7 +44,7 @@ public class ScrapServiceImpl implements ScrapService {
         RecipeLink recipeLink = recipeLinkRepository.findById(recipeLinkId)
                 .orElseThrow(() -> new CustomException(ErrorCode.INVALID_REQUEST));
 
-        Optional<Recipe> optionalRecipe = recipeRepository.findByLink(recipeLink.getLink());
+        Optional<Recipe> optionalRecipe = recipeRepository.findByRecipeLinkId(recipeLinkId);
 
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();

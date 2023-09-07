@@ -35,21 +35,22 @@ public class RecipeServiceImpl implements RecipeService {
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                                     new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        List<Recipe> recipeList = recipeRepository.findAllByUserIdAndLinkContainingIgnoreCase(user.getId(), SOURCE_URL);
+        List<Recipe> recipeList = recipeRepository.findAllByUserId(user.getId());
 
         return RecipeDto.of(recipeList);
     }
 
     @Override
-    public RecipeDto createRecipe(RecipeDto request, String email, MultipartFile file) {
+    public RecipeDto createRecipe(RecipeDto request, String email, MultipartFile file, String path) {
 
-        String urlFilename = awsS3Service.uploadAndGetUrl(file);
+        String urlFilename = awsS3Service.uploadAndGetUrl(file, path);
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                                     new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        long count = recipeRepository.findFirstByOrderByIdDesc().getId() + 1;
-
+        long count = recipeLinkRepository.findFirstByOrderByIdDesc().getId() + 1;
+        RecipeLink recipeLink = new RecipeLink(SOURCE_URL + count, request.getName(), RecipeType.RECIPE_8080);
+        recipeLinkRepository.save(recipeLink);
 
         Recipe recipe = Recipe.builder()
                 .name(request.getName())
@@ -58,21 +59,18 @@ public class RecipeServiceImpl implements RecipeService {
                 .cookTime(request.getCookTime())
                 .ingredients(request.getIngredients())
                 .steps(request.getSteps())
-                .link(SOURCE_URL + count)
+                .recipeLinkId(recipeLink.getId())
                 .userId(user.getId())
                 .build();
         recipeRepository.save(recipe);
-
-        RecipeLink recipeLink = new RecipeLink(recipe.getLink(), recipe.getName(), RecipeType.RECIPE_8080);
-        recipeLinkRepository.save(recipeLink);
 
         return RecipeDto.of(recipe);
     }
 
     @Override
-    public RecipeDto editRecipe(RecipeDto request, String email, MultipartFile file) {
+    public RecipeDto editRecipe(RecipeDto request, String email, MultipartFile file, String path) {
 
-        String urlFilename = awsS3Service.uploadAndGetUrl(file);
+        String urlFilename = awsS3Service.uploadAndGetUrl(file, path);
         request.setImage(urlFilename);
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
@@ -104,6 +102,7 @@ public class RecipeServiceImpl implements RecipeService {
             throw new CustomException(ErrorCode.UNMATCHED_USER_RECIPE);
         }
 
+        awsS3Service.deleteImageFromS3(recipe.getImage());
         recipeRepository.deleteById(recipeId);
 
         return true;

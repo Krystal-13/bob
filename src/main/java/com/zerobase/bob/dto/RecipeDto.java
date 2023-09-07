@@ -19,7 +19,7 @@ public class RecipeDto {
   private List<String> ingredients;
   private List<String> steps;
   private String cookTime;
-  private String link;
+  private Long recipeLinkId;
   private List<ReviewDto> reviews;
 
   public void setImage(String image) {
@@ -27,7 +27,7 @@ public class RecipeDto {
   }
 
   @Builder
-  public RecipeDto(Long id, String name, String image, String description, List<String> ingredients, List<String> steps, String cookTime, String link, List<ReviewDto> reviews) {
+  public RecipeDto(Long id, String name, String image, String description, List<String> ingredients, List<String> steps, String cookTime, Long recipeLinkId, List<ReviewDto> reviews) {
     this.id = id;
     this.name = name;
     this.image = image;
@@ -35,7 +35,7 @@ public class RecipeDto {
     this.ingredients = ingredients;
     this.steps = steps;
     this.cookTime = cookTime;
-    this.link = link;
+    this.recipeLinkId = recipeLinkId;
     this.reviews = reviews;
   }
 
@@ -48,7 +48,7 @@ public class RecipeDto {
         .ingredients(recipe.getIngredients())
         .steps(recipe.getSteps())
         .cookTime(recipe.getCookTime())
-        .link(recipe.getLink())
+        .recipeLinkId(recipe.getRecipeLinkId())
         .reviews(getReviewText(recipe.getReviews()))
         .build();
   }
