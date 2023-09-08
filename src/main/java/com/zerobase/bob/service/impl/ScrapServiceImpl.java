@@ -5,6 +5,7 @@ import com.zerobase.bob.entity.Recipe;
 import com.zerobase.bob.entity.RecipeLink;
 import com.zerobase.bob.exception.CustomException;
 import com.zerobase.bob.exception.ErrorCode;
+import com.zerobase.bob.repository.MenuNameRepository;
 import com.zerobase.bob.repository.RecipeLinkRepository;
 import com.zerobase.bob.repository.RecipeRepository;
 import com.zerobase.bob.scraper.Scraper;
@@ -22,20 +23,20 @@ public class ScrapServiceImpl implements ScrapService {
     private final Scraper scraper;
     private final RecipeLinkRepository recipeLinkRepository;
     private final RecipeRepository recipeRepository;
+    private final MenuNameRepository menuNameRepository;
 
     @Override
     public List<RecipeLink> searchByMenuName(String menuName) {
 
-        List<RecipeLink> recipeLinks = scraper.scrapRecipeUrlAndName(menuName);
-
-        for (RecipeLink e : recipeLinks) {
-            boolean exist = recipeLinkRepository.existsByLink(e.getLink());
-            if (!exist) {
-                recipeLinkRepository.save(e);
-            }
+        boolean exists = menuNameRepository.existsById(menuName);
+        if (!exists) {
+            List<RecipeLink> recipeLinks = scraper.scrapRecipeUrlAndName(menuName);
+            recipeLinkRepository.saveAll(recipeLinks);
         }
 
-        return recipeLinks;
+        String name = String.format("%%%s%%",menuName);
+
+        return recipeLinkRepository.findByNameLike(name);
     }
 
     @Override

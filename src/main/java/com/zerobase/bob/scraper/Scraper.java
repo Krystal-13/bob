@@ -54,6 +54,15 @@ public class Scraper {
                     list.add(new RecipeLink(BASE_URL + attr, recipeName, RecipeType.RECIPE_10000));
                 }
                 page++;
+
+                if (page % 10 == 0) {
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+
             }
 
         } catch (IOException e) {
