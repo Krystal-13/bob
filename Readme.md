@@ -17,6 +17,7 @@
 * Jsoup
 * MySql
 * aws S3
+* Scheduler
 
 ### 프로젝트 기능
 * 회원가입 / 로그인 : 비회원은 레시피 검색만 가능
@@ -25,7 +26,7 @@
 * 레시피 북마크
 * 리뷰 작성
 
-### ERD
-![bob (2)](https://github.com/Krystal-13/bob/assets/129822965/03159475-82fb-44cd-aa9a-15ab29734cfe)
 
+### ERD
+![bob](https://github.com/Krystal-13/bob/assets/129822965/854039f0-c330-448e-925c-b3d468249191)
 
