@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .and()
                     .authorizeRequests()
                         .antMatchers(
-                                "/auth/**", "/search/**"
+                                "/auth/**", "/search/**", "/detail/**"
                         )
                     .permitAll()
                 .and()

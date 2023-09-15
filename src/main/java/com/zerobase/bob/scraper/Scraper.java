@@ -2,6 +2,7 @@ package com.zerobase.bob.scraper;
 
 import com.zerobase.bob.entity.Recipe;
 import com.zerobase.bob.entity.RecipeLink;
+import com.zerobase.bob.entity.type.RecipeType;
 import com.zerobase.bob.exception.CustomException;
 import com.zerobase.bob.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -22,44 +23,63 @@ import java.util.Objects;
 @Component
 @Slf4j
 public class Scraper {
-    private static final String listUrl = "https://www.10000recipe.com/recipe/list.html?q=";
-    private static final String baseUrl = "https://www.10000recipe.com";
+    private static final String LIST_URL = "https://www.10000recipe.com/recipe/list.html?q=%s&page=%d";
+    private static final String BASE_URL = "https://www.10000recipe.com";
 
     public List<RecipeLink> scrapRecipeUrlAndName(String menuName) {
 
         List<RecipeLink> list = new ArrayList<>();
+        int page = 1;
 
         try {
-            Connection connection = Jsoup.connect(listUrl + menuName);
+            String url = String.format(LIST_URL, menuName, page);
+            Connection connection = Jsoup.connect(url);
             Document document = connection.get();
+            /*
+            전체 페이지 가져오기
+            String text = Objects.requireNonNull(document.getElementsByTag("b").first()).text();
+            int maxPage = Integer.parseInt(text.replaceAll(",","")) / 40 + 1;
+             */
+            int maxPage = 3;
 
-            Elements parsingDivs = document.getElementsByClass("common_sp_list_li");
+            while (maxPage >= page) {
 
-        /*
-        검색한 리스트 총 40개 레시피 url
-        /recipe/*******  -> recipeUrl + attr = 메뉴 링크
-         */
-            int count = 0; // 한페이지당 40개
+                url = String.format(LIST_URL, menuName, page);
+                connection = Jsoup.connect(url);
+                document = connection.get();
 
-            for (Element e : parsingDivs) {
-                String attr = e.getElementsByAttribute("href").attr("href");
-                String recipeName =
-                        e.getElementsByClass("common_sp_caption_tit line2").text();
+                Elements parsingDivs = document.getElementsByClass("common_sp_list_li");
 
-                list.add(new RecipeLink(baseUrl + attr, recipeName));
+                for (Element e : parsingDivs) {
+                    String attr = e.getElementsByAttribute("href").attr("href");
+                    String recipeName =
+                            e.getElementsByClass("common_sp_caption_tit line2").text();
+
+                    list.add(new RecipeLink(BASE_URL + attr, recipeName, RecipeType.RECIPE_10000));
+                }
+                page++;
+
+                if (page % 10 == 0) {
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+
             }
 
         } catch (IOException e) {
-            log.debug("scrap failed : " + menuName);
+            log.debug("scrap failed : " + menuName + " - " + page + " page");
         }
 
         return list;
     }
 
-    public Recipe scrapRecipe(RecipeLink recipeLink, Long userId) {
+    public Recipe scrapRecipe(RecipeLink recipeLink) {
 
         List<String> stepList = new ArrayList<>();
-        List<String> ingredients = new ArrayList<>();
+        List<String> ingredientList = new ArrayList<>();
 
         try {
             Connection connection = Jsoup.connect(recipeLink.getLink());
@@ -76,7 +96,7 @@ public class Scraper {
                 String text = e.child(0).text();
                 String unit = e.select(".ingre_unit").text(); // 계량
 
-                ingredients.add(text + " " + unit);
+                ingredientList.add(text + " " + unit);
             }
 
             Element steps = document.getElementsByClass("view_step").get(0);
@@ -90,11 +110,10 @@ public class Scraper {
                     .name(recipeLink.getName())
                     .image(image)
                     .description("")
-                    .ingredients(ingredients)
+                    .ingredients(ingredientList)
                     .steps(stepList)
                     .cookTime(time)
-                    .source(recipeLink.getLink())
-                    .userId(userId)
+                    .recipeLink(recipeLink.getLink())
                     .build();
 
         } catch (IOException e) {

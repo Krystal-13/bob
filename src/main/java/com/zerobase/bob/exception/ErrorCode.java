@@ -17,6 +17,7 @@ public enum ErrorCode {
 
     /* recipe */
     RECIPE_NOT_FOUNT("일치하는 레시피가 없습니다.", NOT_FOUND),
+    ALREADY_REGISTERED_RECIPE("이미 북마크되어 있는 레시피입니다.", BAD_REQUEST),
     UNMATCHED_USER_RECIPE("본인의 레시피만 수정/삭제할 수 있습니다.", BAD_REQUEST),
 
     /* else */
