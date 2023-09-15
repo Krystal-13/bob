@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
-    Optional<Recipe> findByRecipeLinkId(Long recipeLinkId);
+    Optional<Recipe> findByRecipeLink(String recipeLink);
     @EntityGraph(attributePaths = "reviews")
     List<Recipe> findAllByUserId(Long userId);
 }

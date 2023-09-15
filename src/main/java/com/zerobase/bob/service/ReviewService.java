@@ -26,7 +26,11 @@ public class ReviewService {
 
     public ReviewDto writeReview(String email, ReviewDto reviewDto, MultipartFile file, String path) {
 
-        String urlFilename = awsS3Service.uploadAndGetUrl(file, path);
+        String urlFilename = "";
+
+        if (file != null && !file.isEmpty()) {
+            urlFilename = awsS3Service.uploadAndGetUrl(file, path);
+        }
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                 new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -43,7 +47,7 @@ public class ReviewService {
                 .build();
         reviewRepository.save(review);
 
-        recipe.setReviews(review);
+        recipe.addReview(review);
         recipeRepository.save(recipe);
 
         return ReviewDto.of(review);

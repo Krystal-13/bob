@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface RecipeLinkRepository extends JpaRepository<RecipeLink, Long>, RecipeLinkCustomRepository {
     RecipeLink findFirstByOrderByIdDesc();
-    List<RecipeLink> findByNameLike(String name);
+    List<RecipeLink> findByNameContains(String name);
 }

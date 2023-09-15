@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 public class ReviewDto {
 
+    private Long id;
     private Long recipeId;
     private String userName;
     private String text;
@@ -17,7 +18,8 @@ public class ReviewDto {
     private LocalDateTime registeredAt;
 
     @Builder
-    public ReviewDto(Long recipeId, String userName, String text, String image, int score, LocalDateTime registeredAt) {
+    public ReviewDto(Long id, Long recipeId, String userName, String text, String image, int score, LocalDateTime registeredAt) {
+        this.id = id;
         this.recipeId = recipeId;
         this.userName = userName;
         this.text = text;
@@ -28,6 +30,7 @@ public class ReviewDto {
 
     public static ReviewDto of(Review review) {
         return ReviewDto.builder()
+                .id(review.getId())
                 .recipeId(review.getRecipeId())
                 .userName(review.getUser().getName())
                 .text(review.getText())

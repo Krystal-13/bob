@@ -35,8 +35,12 @@ public class Scraper {
             String url = String.format(LIST_URL, menuName, page);
             Connection connection = Jsoup.connect(url);
             Document document = connection.get();
+            /*
+            전체 페이지 가져오기
             String text = Objects.requireNonNull(document.getElementsByTag("b").first()).text();
             int maxPage = Integer.parseInt(text.replaceAll(",","")) / 40 + 1;
+             */
+            int maxPage = 3;
 
             while (maxPage >= page) {
 
@@ -109,7 +113,7 @@ public class Scraper {
                     .ingredients(ingredientList)
                     .steps(stepList)
                     .cookTime(time)
-                    .recipeLinkId(recipeLink.getId())
+                    .recipeLink(recipeLink.getLink())
                     .build();
 
         } catch (IOException e) {

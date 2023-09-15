@@ -23,7 +23,7 @@ public class ReviewController {
     public ResponseEntity<ReviewDto> writeReview (Principal principal,
                                                   HttpServletRequest request,
                                                   @RequestPart(value = "dto") ReviewDto reviewDto,
-                                                  @RequestPart(value = "file") MultipartFile file) {
+                                                  @RequestPart(value = "file", required = false) MultipartFile file) {
 
         return ResponseEntity.ok(reviewService.writeReview(principal.getName(), reviewDto, file, request.getServletPath()));
     }

@@ -20,7 +20,8 @@ public class BookmarkDto {
 
 
     @Builder
-    private BookmarkDto(Long userId, RecipeDto recipe, String groupName, String memo) {
+    private BookmarkDto(Long id, Long userId, RecipeDto recipe, String groupName, String memo) {
+        this.id = id;
         this.userId = userId;
         this.recipe = recipe;
         this.groupName = groupName;
@@ -29,6 +30,7 @@ public class BookmarkDto {
 
     public static BookmarkDto of(Bookmark bookmark) {
         return BookmarkDto.builder()
+                .id(bookmark.getId())
                 .userId(bookmark.getUserId())
                 .recipe(RecipeDto.of(bookmark.getRecipe()))
                 .groupName(bookmark.getGroupName())

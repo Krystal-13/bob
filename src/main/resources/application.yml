@@ -1,28 +1,35 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/bob
+    url: ${MYSQL_URL}
     username: ${MYSQL_USER}
     password: ${MYSQL_PASS}
+  sql:
+    init:
+      schema-locations: classpath:schema.sql
+      mode: always
   jpa:
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
-
   jwt:
     secret: ${SECRET_KEY}
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
 
 cloud:
   aws:
     s3:
       bucket: ${BUCKET_NAME}
+      path: ${BUCKET_PATH}
     stack.auto: false
     credentials:
       accessKey: ${BUCKET_ACCESS_KEY}
       secretKey: ${BUCKET_SECRET_KEY}
     region:
-      static: ap-southeast-2
+      static: ${BUCKET_STATIC}
 
 logging:
   level:
@@ -30,3 +37,8 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: ERROR
+
+scheduler:
+  scrap:
+    10000Recipe: "0 0 2 1 * *"
+

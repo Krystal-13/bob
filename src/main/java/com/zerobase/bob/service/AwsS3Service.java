@@ -27,10 +27,6 @@ public class AwsS3Service {
 
     public String uploadAndGetUrl(MultipartFile file, String path) {
 
-        if (file.isEmpty()) {
-            return "";
-        }
-
         String uuid = UUID.randomUUID().toString().replaceAll("-","");
         String key = String.format("%s/%s",path.substring(1),uuid);
 

@@ -59,7 +59,7 @@ public class RecipeServiceImpl implements RecipeService {
                 .cookTime(request.getCookTime())
                 .ingredients(request.getIngredients())
                 .steps(request.getSteps())
-                .recipeLinkId(recipeLink.getId())
+                .recipeLink(recipeLink.getLink())
                 .userId(user.getId())
                 .build();
         recipeRepository.save(recipe);

@@ -20,6 +20,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column(name = "recipe_id")
     private Long recipeId;
 
@@ -27,6 +28,7 @@ public class Review {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Lob
     private String text;
     private String image;
     private int score;
