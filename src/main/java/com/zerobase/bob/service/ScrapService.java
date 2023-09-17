@@ -1,6 +1,7 @@
 package com.zerobase.bob.service;
 
 import com.zerobase.bob.dto.RecipeDto;
+import com.zerobase.bob.entity.MenuName;
 import com.zerobase.bob.entity.Recipe;
 import com.zerobase.bob.entity.RecipeLink;
 import com.zerobase.bob.exception.CustomException;
@@ -28,6 +29,7 @@ public class ScrapService {
 
         boolean exists = menuNameRepository.existsById(menuName);
         if (!exists) {
+            menuNameRepository.save(new MenuName(menuName));
             List<RecipeLink> recipeLinks = scraper.scrapRecipeUrlAndName(menuName);
             recipeLinkRepository.saveAll(recipeLinks);
         }
