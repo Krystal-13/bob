@@ -3,6 +3,8 @@ package com.zerobase.bob.controller;
 import com.zerobase.bob.dto.RecipeDto;
 import com.zerobase.bob.service.RecipeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +19,12 @@ import java.util.List;
 public class RecipeController {
 
     private final RecipeService recipeService;
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<RecipeDto>> searchRecipeByIngredient(@RequestParam String ingredient, Pageable pageable) {
+
+        return ResponseEntity.ok(recipeService.searchRecipeByIngredient(ingredient, pageable));
+    }
 
     @GetMapping("/list")
     public ResponseEntity<List<RecipeDto>> getMyRecipeList(Principal principal) {

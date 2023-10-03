@@ -24,6 +24,10 @@ public class Review {
     @Column(name = "recipe_id")
     private Long recipeId;
 
+    /**
+     1:N 조회는 JPA 의 N+1 조회 문제를 야기시킵니다. Fetch Join 등으로 해결 할 수 있고,
+     N+1 은 면접에서 자주 등장하는 문제이니 여러 문서를 바탕으로 꼭 정리하기
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
