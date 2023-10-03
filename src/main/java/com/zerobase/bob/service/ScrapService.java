@@ -3,12 +3,14 @@ package com.zerobase.bob.service;
 import com.zerobase.bob.dto.RecipeDto;
 import com.zerobase.bob.entity.MenuName;
 import com.zerobase.bob.entity.Recipe;
+import com.zerobase.bob.entity.RecipeDocument;
 import com.zerobase.bob.entity.RecipeLink;
 import com.zerobase.bob.exception.CustomException;
 import com.zerobase.bob.exception.ErrorCode;
 import com.zerobase.bob.repository.MenuNameRepository;
 import com.zerobase.bob.repository.RecipeLinkRepository;
 import com.zerobase.bob.repository.RecipeRepository;
+import com.zerobase.bob.repository.RecipeSearchRepository;
 import com.zerobase.bob.scraper.Scraper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class ScrapService {
     private final RecipeLinkRepository recipeLinkRepository;
     private final RecipeRepository recipeRepository;
     private final MenuNameRepository menuNameRepository;
+    private final RecipeSearchRepository recipeSearchRepository;
 
     public List<RecipeLink> searchByMenuName(String menuName) {
 
@@ -52,6 +55,7 @@ public class ScrapService {
 
         Recipe recipe = scraper.scrapRecipe(recipeLink);
         recipeRepository.save(recipe);
+        recipeSearchRepository.save(RecipeDocument.ofEntity(recipe));
 
         return RecipeDto.of(recipe);
     }

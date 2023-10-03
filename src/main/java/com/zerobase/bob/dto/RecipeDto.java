@@ -1,9 +1,11 @@
 package com.zerobase.bob.dto;
 
 import com.zerobase.bob.entity.Recipe;
+import com.zerobase.bob.entity.RecipeDocument;
 import com.zerobase.bob.entity.Review;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,6 +53,20 @@ public class RecipeDto {
         .recipeLink(recipe.getRecipeLink())
         .reviews(getReviewText(recipe.getReviews()))
         .build();
+  }
+
+  public static RecipeDto ofDocument(RecipeDocument recipe) {
+    return RecipeDto.builder()
+            .id(Long.valueOf(recipe.getId()))
+            .name(recipe.getName())
+            .image(recipe.getImage())
+            .description(recipe.getDescription())
+            .ingredients(recipe.getIngredients())
+            .steps(recipe.getSteps())
+            .cookTime(recipe.getCookTime())
+            .recipeLink(recipe.getRecipeLink())
+            .reviews(getReviewText(recipe.getReviews()))
+            .build();
   }
 
   public static List<RecipeDto> of(List<Recipe> recipeList) {

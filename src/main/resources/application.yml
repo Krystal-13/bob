@@ -1,23 +1,26 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${MYSQL_URL}
+    url: jdbc:mysql://localhost:3306/bob
     username: ${MYSQL_USER}
     password: ${MYSQL_PASS}
-  sql:
-    init:
-      schema-locations: classpath:schema.sql
-      mode: always
   jpa:
     generate-ddl: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
   jwt:
     secret: ${SECRET_KEY}
   jackson:
     serialization:
       fail-on-empty-beans: false
+  elasticsearch:
+    username: ${ELASTIC_NAME}
+    password: ${ELASTIC_SECRET}
+    hostname: ${ELASTIC_HOSTNAME}
+    port: ${ELASTIC_PORT}
+  main:
+    allow-bean-definition-overriding: true
 
 cloud:
   aws:
@@ -29,7 +32,7 @@ cloud:
       accessKey: ${BUCKET_ACCESS_KEY}
       secretKey: ${BUCKET_SECRET_KEY}
     region:
-      static: ${BUCKET_STATIC}
+      static: ap-southeast-2
 
 logging:
   level:
@@ -42,3 +45,6 @@ scheduler:
   scrap:
     10000Recipe: "0 0 2 1 * *"
 
+recipe:
+  source:
+    url: "http://localhost:8080/recipe/"
